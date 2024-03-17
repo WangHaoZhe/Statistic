@@ -17,8 +17,26 @@ diff = []
 for i in range(int(np.shape(data)[0]) - 1):
     diff.append(0.002 * np.array(data[i + 1] - data[i]))
 
+count = {}
+
+# Calculate total num in each group (1us~200us, step=1us)
+for i in range(200):
+    for j in range(len(diff)):
+        if i < diff[j] < i + 1:
+            if i in count:
+                count[i] += 1
+            else:
+                count[i] = 1
+
+sorted_count = dict(sorted(count.items()))
+x_ = list(sorted_count.keys())
+n_ = list(sorted_count.values())
+print(x_)
+print(n_)
+
 # Plot histogram
-plt.bar(np.linspace(1, len(diff), len(diff)), np.array(diff))
-plt.ylabel("Time difference of signal generated (us)")
-plt.title("Lu176 Decay Time Difference")
+plt.xlabel("Time (us)")
+plt.ylabel("Number")
+plt.title("Time difference distribution of Lu176 decay")
+plt.bar(x_, n_, color="#1f77b4")
 plt.show()
